@@ -1,46 +1,52 @@
-//setup of new scene
-const scene = new THREE.Scene();
-scene.background = new THREE.Color( 0xe0e0e0 );
-scene.fog = new THREE.Fog( 0xe0e0e0, 20, 100 );
-
-//camera 
-
-let camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.25, 100 );
-camera.position.set( - 5, 3, 10 );
-camera.lookAt( new THREE.Vector3( 0, 2, 0 ) );
+let scene,camera,renderer,mesh,light,grid;
 
 
-// lights
-let light = new THREE.HemisphereLight( 0xffffff, 0x444444 );
-light.position.set( 0, 20, 0 );
-scene.add( light );
+let init = ()=>{
+	scene = new THREE.Scene();
+	scene.background = new THREE.Color( 0xe0e0e0 );
+	scene.fog = new THREE.Fog( 0xe0e0e0, 20, 100 );
 
-light = new THREE.DirectionalLight( 0xffffff );
-light.position.set( 0, 20, 10 );
-scene.add( light );
+	//camera 
 
-// ground
-
-let mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 2000, 2000 ), new THREE.MeshPhongMaterial( { color: 0x999999, depthWrite: false } ) );
-mesh.rotation.x = - Math.PI / 2;
-scene.add( mesh );
-
-let grid = new THREE.GridHelper( 200, 40, 0x000000, 0x000000 );
-grid.material.opacity = 0.2;
-grid.material.transparent = true;
-scene.add( grid );
+	camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.25, 100 );
+	camera.position.set( - 5, 3, 10 );
+	camera.lookAt( new THREE.Vector3( 0, 2, 0 ) );
 
 
+	// lights
+	light = new THREE.HemisphereLight( 0xffffff, 0x444444 );
+	light.position.set( 0, 20, 0 );
+	scene.add( light );
+
+	light = new THREE.DirectionalLight( 0xffffff );
+	light.position.set( 0, 20, 10 );
+	scene.add( light );
+
+	// ground
+
+	mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 2000, 2000 ), new THREE.MeshPhongMaterial( { color: 0x999999, depthWrite: false } ) );
+	mesh.rotation.x = - Math.PI / 2;
+	scene.add( mesh );
+
+	grid = new THREE.GridHelper( 200, 40, 0x000000, 0x000000 );
+	grid.material.opacity = 0.2;
+	grid.material.transparent = true;
+	scene.add( grid );
 
 
 
-const renderer = new THREE.WebGLRenderer({antialias: true} );
-renderer.setClearColor( 0xffffff, 0 )
-renderer.setSize( window.innerWidth, window.innerHeight );
-document.body.appendChild( renderer.domElement );
 
 
-camera.position.z = 7;
+	renderer = new THREE.WebGLRenderer({antialias: true} );
+	renderer.setClearColor( 0xffffff, 0 )
+	renderer.setSize( window.innerWidth, window.innerHeight );
+	document.body.appendChild( renderer.domElement );
+
+
+	camera.position.z = 7;
+}
+
+init();
 
 // create an AudioListener and add it to the camera
 let listener = new THREE.AudioListener();
