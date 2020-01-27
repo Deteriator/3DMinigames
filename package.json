@@ -1,0 +1,14 @@
+{
+  "name": "3dminigames",
+  "version": "1.0.0",
+  "description": "Group of games using three.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Deteriator",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
