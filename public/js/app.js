@@ -47,23 +47,23 @@ let init = ()=>{
 }
 
 init();
+document.querySelector('button').addEventListener('click', function() {
+		// create an AudioListener and add it to the camera
+		let listener = new THREE.AudioListener();
+		camera.add( listener );
 
-// create an AudioListener and add it to the camera
-let listener = new THREE.AudioListener();
-camera.add( listener );
+		// create a global audio source
+		let sound = new THREE.Audio( listener );
 
-// create a global audio source
-let sound = new THREE.Audio( listener );
-
-// load a sound and set it as the Audio object's buffer
-let audioLoader = new THREE.AudioLoader();
-audioLoader.load( '../sounds/chill.ogg', function( buffer ) {
-	sound.setBuffer( buffer );
-	sound.setLoop( true );
-	sound.setVolume( 1 );
-	sound.play();
+		// load a sound and set it as the Audio object's buffer
+		let audioLoader = new THREE.AudioLoader();
+		audioLoader.load( '../sounds/chill.ogg', function( buffer ) {
+			sound.setBuffer( buffer );
+			sound.setLoop( true );
+			sound.setVolume( 1 );
+			sound.play();
+		});
 });
-
 // instantiate the loader
 const objLoader = new THREE.OBJLoader();
 objLoader.setPath('../blender-files/')
