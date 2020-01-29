@@ -1,5 +1,5 @@
-let scene,camera,renderer,mesh,light,grid;
-
+let scene,camera,renderer,mesh,light,grid,model,mixer,actions,clock;
+clock = new THREE.Clock()
 
 let init = ()=>{
 	scene = new THREE.Scene();
@@ -24,13 +24,13 @@ let init = ()=>{
 
 	// ground
 
-	mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 2000, 2000 ), new THREE.MeshPhongMaterial( { color: 0x999999, depthWrite: false } ) );
+	mesh = new THREE.Mesh( new THREE.PlaneBufferGeometry( 2000, 2000 ), new THREE.MeshPhongMaterial( { color: 0x210378, depthWrite: false } ) );
 	mesh.rotation.x = - Math.PI / 2;
 	scene.add( mesh );
 
-	grid = new THREE.GridHelper( 200, 40, 0x000000, 0x000000 );
+	grid = new THREE.GridHelper( 200, 40, 0x39ff14, 0x39ff14 );
 	grid.material.opacity = 0.2;
-	grid.material.transparent = true;
+	grid.material.transparent = false;
 	scene.add( grid );
 
 
@@ -47,6 +47,7 @@ let init = ()=>{
 }
 
 init();
+
 document.querySelector('button').addEventListener('click', function() {
 		// create an AudioListener and add it to the camera
 		let listener = new THREE.AudioListener();
@@ -64,34 +65,53 @@ document.querySelector('button').addEventListener('click', function() {
 			sound.play();
 		});
 });
+
 // instantiate the loader
 const objLoader = new THREE.OBJLoader();
 objLoader.setPath('../blender-files/')
 const mtlLoader = new THREE.MTLLoader();
 mtlLoader.setPath('../blender-files/')
+const gltfLoader = new THREE.GLTFLoader();
+gltfLoader.setPath('../blender-files/')
 //When materials are received 
 
-let robot = {};
 
-new Promise((resolve) =>{
-	mtlLoader.load('Robot.mtl',(materials) => {
-		resolve(materials);
-	})
+//model added
+gltfLoader.load('RobotExpressive.glb', function (glb){
+	model = glb.scene
+	scene.add(model)
+	mixer = new THREE.AnimationMixer( model );
+	console.log(glb.animations)
+	idle = mixer.clipAction(glb.animations[6])
+	idle.play()
 })
-.then((materials) =>{
-	materials.preload();
-	objLoader.setMaterials(materials);
-	objLoader.load('Robot.obj', (object) => {
-		robot = object
-		scene.add(object)
-	})
-})
+// movement - please calibrate these values
+let xSpeed = 0.01;
+let ySpeed = 0.01;
 
+document.addEventListener("keydown", onDocumentKeyDown, false);
+
+function onDocumentKeyDown(event) {
+    let keyCode = event.which;
+    if (keyCode == 87) {
+        model.position.y += ySpeed;
+    } else if (keyCode == 83) {
+        model.position.y -= ySpeed;
+    } else if (keyCode == 65) {
+        model.position.x -= xSpeed;
+    } else if (keyCode == 68) {
+        model.position.x += xSpeed;
+    } else if (keyCode == 32) {
+        model.position.set(0, 0, 0);
+    }
+    render();
+};
 
 
 let render = () => {
+	let mixerUpdateDelta = clock.getDelta()
 	requestAnimationFrame( render );
-	robot.rotation.y += 0.01;
+	mixer.update(mixerUpdateDelta)
 	renderer.render( scene, camera );
 }
 render();
