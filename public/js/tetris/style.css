@@ -26,12 +26,9 @@ canvas{
 	top: 50%;
 	margin-left: -300px; /* This is half the width */
 	margin-top: -200px; /* This is half the height */
-    border:2px solid pink;
+    border:5px solid blue;
 }
 
-p{
-    color:pink;
-}
 /*#body{*/
 /*    background-color:black;*/
 /*}*/

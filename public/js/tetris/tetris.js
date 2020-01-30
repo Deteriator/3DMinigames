@@ -6,7 +6,7 @@ console.log(ctx)
 const ROW = 20;
 const COL = 10;
 const SQ = 20; 
-const VACANT = "#000ead"; // color of an empty square
+const VACANT ="#141313"; // color of an empty square
 
 
 // draw a square
@@ -37,9 +37,48 @@ function drawBoard(){
     }
 }
 
-drawBoard(); //drawing empty board 
+// drawBoard(); //drawing empty board 
 
 console.log(board)
+
+
+// funtion that appends game over 
+function drawGameOver(){
+    ctx.font = 'italic 40px Arial';
+    ctx.textAlign = 'center';
+    ctx. textBaseline = 'middle';
+    ctx.fillStyle = 'red';  // a color name or by using rgb/rgba/hex values
+    ctx.fillText('Game Over', 320, 150);
+}
+
+// draw the score board 
+function drawScoreBoard(){
+    ctx.font = 'italic 25px Arial';
+    ctx.textAlign = 'center';
+    ctx. textBaseline = 'middle';
+    ctx.fillStyle = 'red';  // a color name or by using rgb/rgba/hex values
+    ctx.fillText('Score:', 250, 80);
+}
+drawScoreBoard();
+
+
+
+// function for score incrementation
+function scoreIncrement(number){
+    ctx.font = 'italic 25px Arial';
+    ctx.textAlign = 'center';
+    ctx. textBaseline = 'middle';
+    ctx.fillStyle = 'red';  
+    ctx.fillText(number, 310, 80);
+}
+
+let score = 0;
+
+function scoreClear(){
+    ctx.fillStyle = 'black';
+    ctx.fillRect(290,60,50,50);
+}
+scoreClear();
 
 // the pieces and their colors
 const pink = "#ff46ff"
@@ -67,6 +106,7 @@ function randomPiece(){
     let r  = Math.floor(Math.random() * PIECES.length) // 0 -> 6
     return new Piece(PIECES[r][0],PIECES[r][1]);
 }
+
 
 let p = randomPiece();
 
@@ -169,13 +209,6 @@ Piece.prototype.rotate = function(){
     }
 }
 
-
-
-
-
-let score = 0;
-
-
 Piece.prototype.lock = function(){
     for( let r = 0; r < this.activeTetromino.length; r++){
         for(let c = 0; c < this.activeTetromino.length; c++){
@@ -185,7 +218,8 @@ Piece.prototype.lock = function(){
             }
             // pieces to lock on top = game over
             if(this.y + r < 0){
-                alert('game')
+                // alert('game')
+                drawGameOver()
                 // stop request animation frame
                 gameOver = true;
                 break;
@@ -213,14 +247,15 @@ Piece.prototype.lock = function(){
                 board[0][c] = VACANT;
             }
             // increment the score
+            scoreClear();
             score += 10;
+            scoreIncrement(score);
         }
     }
     // update the board
     drawBoard();
     
     // update the score
-    scoreElement.innerHTML = score;
 }
 
 // ////////////////////////////////////////////////////////
@@ -254,7 +289,6 @@ Piece.prototype.collision = function(x,y,piece){
 }
 
 // CONTROL the piece
-document.addEventListener("keydown",CONTROL);
 // key codes for arrow keys
 const left = 37
 const right = 39
@@ -277,8 +311,8 @@ function CONTROL(event){
 }
 
 // drop the piece every 1sec
-
 let dropStart = Date.now();
+
 let gameOver = false;
 function drop(){
     let now = Date.now();
@@ -292,4 +326,17 @@ function drop(){
     }
 }
 
-drop();
+
+// STARTS GAME
+function startGame(){
+    document.addEventListener("keydown",CONTROL);
+    drop();
+}
+
+window.addEventListener('keydown', (e)=>{
+    if(e.keyCode == 32){
+     startGame();   
+    }
+})
+
+let tetrisLogo = "https://i7.pngguru.com/preview/106/455/624/puyo-puyo-tetris-tetris-ds-magical-tetris-challenge-tetris-axis-earth-infographics.jpg"
