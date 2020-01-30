@@ -1,0 +1,37 @@
+#score{
+    display: inline-block;
+    color:pink;
+}
+
+.score-text{
+    display: inline-block;
+    color:pink;
+}
+
+div{
+    font-size: 25px;
+    font-weight: bold;
+    font-family: monospace;
+    text-align: center;
+}
+        
+canvas{
+    display: block;
+    /*margin:0 auto;*/
+    background-color:black;
+    position: absolute;
+	width: 600px;
+	height: 400px;
+	left: 50%;
+	top: 50%;
+	margin-left: -300px; /* This is half the width */
+	margin-top: -200px; /* This is half the height */
+    border:2px solid pink;
+}
+
+p{
+    color:pink;
+}
+/*#body{*/
+/*    background-color:black;*/
+/*}*/
