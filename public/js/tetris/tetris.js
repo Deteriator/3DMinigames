@@ -26,7 +26,6 @@ for(let r = 0; r <ROW; r++){ //first loop for rows
         board[r][c] = VACANT;
     }
 }
-console.log(board)
 
 // draw the board
 function drawBoard(){
@@ -36,9 +35,6 @@ function drawBoard(){
         }
     }
 }
-
-// drawBoard(); //drawing empty board 
-
 console.log(board)
 
 
@@ -59,8 +55,6 @@ function drawScoreBoard(){
     ctx.fillStyle = 'red';  // a color name or by using rgb/rgba/hex values
     ctx.fillText('Score:', 250, 80);
 }
-drawScoreBoard();
-
 
 
 // function for score incrementation
@@ -78,15 +72,45 @@ function scoreClear(){
     ctx.fillStyle = 'black';
     ctx.fillRect(290,60,50,50);
 }
-scoreClear();
+
+
+let tetrisLogo ="https://www.userlogos.org/files/logos/MShadows/tetris1.png"
+let img = new Image();
+img.src = tetrisLogo;
+
+function drawLogo(){
+    ctx.drawImage(img, 100, 0);
+}
+
+
+
+function clearLogo(){
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+}
+// STARTS GAME
+function startGame(){
+    clearLogo();
+    drawBoard(); 
+    // draws empty board
+    drawScoreBoard();
+    // draws score board
+    document.addEventListener("keydown",CONTROL);
+    // control keys activated
+    drop();
+    // timed pieces drop
+}
+
+
+
 
 // the pieces and their colors
 const pink = "#ff46ff"
-const green = "#82ff5a"
-const yellow = "#ecff11"
-const blue = "#22ffff"
-const purple = "#923dff"
-const orange = "#ffba3f"
+const green = "#19ff63"
+const yellow = "#ebff00"
+const blue = "#00f5ff"
+const purple = "#7000ff"
+const orange = "#ff9900"
 const red = "#ff4141"
 
 
@@ -326,17 +350,10 @@ function drop(){
     }
 }
 
-
-// STARTS GAME
-function startGame(){
-    document.addEventListener("keydown",CONTROL);
-    drop();
-}
-
+drawLogo();
 window.addEventListener('keydown', (e)=>{
     if(e.keyCode == 32){
      startGame();   
     }
 })
 
-let tetrisLogo = "https://i7.pngguru.com/preview/106/455/624/puyo-puyo-tetris-tetris-ds-magical-tetris-challenge-tetris-axis-earth-infographics.jpg"
