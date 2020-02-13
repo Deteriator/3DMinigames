@@ -135,7 +135,7 @@ let img = new Image();
 img.src = tetrisLogo;
 
 function drawLogo(){
-    ctx.drawImage(img, 100, 0);
+    ctx.drawImage(img, 0, 0);
 }
 
 
@@ -527,7 +527,7 @@ function interact(mesh1,mesh2){
    	  if ( keyboard.pressed("Z")){
    	  	walking.stop()
    	  	drawArcadeScreen();
-   	  	//audioPlayer();
+   	  	audioPlayer();
    	  } 
     if( getDistance(mesh1,mesh2) <= 10){
 
