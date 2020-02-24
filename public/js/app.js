@@ -1,5 +1,6 @@
 let scene,camera,renderer,mesh,light,grid,model,mixer,actions,clock,arcade;
 let idle,walking;
+let music = false
 let lose = false;
 clock = new THREE.Clock()
 let keyboard = new THREEx.KeyboardState();
@@ -469,29 +470,40 @@ gltfLoader.load('RobotExpressive.glb', function (glb){
 	idle.play()
 })
 let updateMovement = () =>{
+    let walk = false;
 	let moveDistance = 50 * clock.getDelta();
 	if ( keyboard.pressed("W")) {
+        walk = true
 		model.rotation.y = (Math.PI) 
 		model.translateZ( moveDistance );
 		walking.play()
 	}	
 	if ( keyboard.pressed("S")) {
+        walk = true
 		model.rotation.y = Math.PI + Math.PI
 		model.translateZ( moveDistance );
 		walking.play()
 	}
 
 	if ( keyboard.pressed("A")) {
+        walk = true
 		model.rotation.y = -Math.PI / 2;
 		model.translateZ( moveDistance );
 		walking.play()
 	}
 		
 	if ( keyboard.pressed("D")){
+        walk = true
 		model.rotation.y = Math.PI / 2;
 		model.translateZ(  moveDistance );
 		walking.play()
 	}
+    if (keyboard.pressed("X")){
+        walk = false
+    }
+    if(!walk){
+        walking.stop();
+    }
     if(lose){
         idle.stop()
         death.setLoop(THREE.LoopOnce)
@@ -500,6 +512,8 @@ let updateMovement = () =>{
     }	
 }
 function audioPlayer(){
+    if(!music){
+        music = true
 	    // create an AudioListener and add it to the camera
 		let listener = new THREE.AudioListener();
 		arcade.add( listener );
@@ -515,6 +529,7 @@ function audioPlayer(){
 			sound.setVolume( 1 );
 			sound.play();
 	})
+    }
 }
 function getDistance(mesh1, mesh2) { 
   let dx = mesh1.position.x - mesh2.position.x; 
